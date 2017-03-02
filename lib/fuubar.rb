@@ -29,7 +29,8 @@ class Fuubar < RSpec::Core::Formatters::BaseTextFormatter
                         merge(:throttle_rate => continuous_integration? ? 1.0 : nil).
                         merge(:total     => 0,
                               :output    => output,
-                              :autostart => false)
+                              :autostart => false,
+                              :title => "Preparing to run tests")
     )
   end
 
@@ -50,6 +51,11 @@ class Fuubar < RSpec::Core::Formatters::BaseTextFormatter
 
     with_current_color { progress.start }
   end
+
+  def example_group_started(notification)
+    self.progress.title = notification.group.description
+  end
+
 
   def example_passed(_notification)
     self.passed_count += 1
